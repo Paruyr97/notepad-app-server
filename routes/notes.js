@@ -33,12 +33,15 @@ const notesRoutes = (app, fs) => {
     app.post('/note', (req, res) => {
 
         readFile(data => {
-            const newUserId = Date.now().toString();
+            const newNoteId = Date.now().toString();
 
-            data[newUserId.toString()] = {...req.body,id:newUserId};
-            
+            data[newNoteId] = {
+                ...req.body,
+                id: newNoteId
+            };
+
             writeFile(JSON.stringify(data, null, 2), () => {
-                res.status(200).send('new note added');
+                res.status(200).send(newNoteId);
             });
         }, true);
     });
@@ -50,7 +53,7 @@ const notesRoutes = (app, fs) => {
             data[noteId] = req.body;
 
             writeFile(JSON.stringify(data, null, 2), () => {
-                res.status(200).send(`note id:${noteId} updated`);
+                res.status(200).send(noteId);
             });
         }, true);
     });
@@ -61,8 +64,8 @@ const notesRoutes = (app, fs) => {
 
             delete data[noteId];
 
-            writeFile(JSON.stringify(data, null, 2), () => {
-                res.status(200).send(`notes id:${noteId} removed`);
+            writeFile(JSON.stringify(data, null, 2), (err) => {
+                res.status(200).send(noteId);
             });
         }, true);
     });
