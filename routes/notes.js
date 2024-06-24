@@ -53,7 +53,7 @@ const notesRoutes = (app, fs) => {
             data[noteId] = req.body;
 
             writeFile(JSON.stringify(data, null, 2), () => {
-                res.status(200).send(noteId);
+                res.status(200).send(data[noteId]);
             });
         }, true);
     });
